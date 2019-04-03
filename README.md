@@ -10,9 +10,6 @@
 <b>Building from source</b>
 On Windows and Mac, use cmake to build. On other platforms, just run make to build.
 
-<b>Build Dependencies</b>
-c-ares
-
 <b>Credits</b>
 LittleTalks was written by Marek Dubovsky dubovskymarek@icloud.com
 
