@@ -23,5 +23,89 @@ LittleTalks was written by Marek Dubovsky dubovskymarek@icloud.com<br/>
 
 <b>Quick start</b>
 <p>Example1 demonstrates basic sending and receiving 2 topics between 2 or more users.</p>
-<div class="fragment"><div class="line"></div><div class="line"><span class="preprocessor">#include &quot;<a class="code" href="_little_talks_8h.html">LittleTalks.h</a>&quot;</span></div><div class="line"></div><div class="line"><span class="preprocessor">#define STR_MAX_LENGTH               50</span></div><div class="line"><span class="preprocessor">#define VARIABLE_NUMBER_TOPIC_ID       0x01</span></div><div class="line"><span class="preprocessor">#define VARIABLE_STRING_TOPIC_ID       0x02</span></div><div class="line"></div><div class="line"><span class="keywordtype">void</span> OnConnect(LT_DEVICE_ID deviceId)</div><div class="line">{</div><div class="line">    printf(<span class="stringliteral">&quot;Connect device %llu\n&quot;</span>, deviceId);</div><div class="line">    fflush(stdout);</div><div class="line">}</div><div class="line"><span class="keywordtype">void</span> OnDisconnect(LT_DEVICE_ID deviceId)</div><div class="line">{</div><div class="line">    printf(<span class="stringliteral">&quot;Disconnect device %llu\n&quot;</span>, deviceId);</div><div class="line">    fflush(stdout);</div><div class="line">}</div><div class="line"><span class="keywordtype">void</span> OnSubscribe(LT_DEVICE_ID deviceId, LT_UINT64 topicId)</div><div class="line">{</div><div class="line">    <span class="keywordflow">if</span>(topicId == VARIABLE_NUMBER_TOPIC_ID)</div><div class="line">    {</div><div class="line">        printf(<span class="stringliteral">&quot;Subscribe variable number from device %llu\n&quot;</span>, deviceId);</div><div class="line">        fflush(stdout);</div><div class="line">    }</div><div class="line">    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(topicId == VARIABLE_STRING_TOPIC_ID)</div><div class="line">    {</div><div class="line">        printf(<span class="stringliteral">&quot;Subscribe variable string from device %llu\n&quot;</span>, deviceId);</div><div class="line">        fflush(stdout);</div><div class="line">    }</div><div class="line">}</div><div class="line"><span class="keywordtype">void</span> OnReceive(LT_DEVICE_ID deviceId, LT_UINT64 topicId, BYTE* value, <span class="keywordtype">int</span> valueSize)</div><div class="line">{</div><div class="line">    UNUSED(valueSize);</div><div class="line"></div><div class="line">    <span class="keywordflow">if</span>(topicId == VARIABLE_NUMBER_TOPIC_ID)</div><div class="line">    {</div><div class="line">        printf(<span class="stringliteral">&quot;Receive variable number %d from device %llu\n&quot;</span>, (<span class="keywordtype">int</span>)*value, deviceId);</div><div class="line">        fflush(stdout);</div><div class="line">    }</div><div class="line">    <span class="keywordflow">else</span> <span class="keywordflow">if</span>(topicId == VARIABLE_STRING_TOPIC_ID)</div><div class="line">    {</div><div class="line">        printf(<span class="stringliteral">&quot;Receive variable string \&quot;%s\&quot; from device %llu\n&quot;</span>, (<span class="keywordtype">char</span>*)value,  deviceId);</div><div class="line">        fflush(stdout);</div><div class="line">    }</div><div class="line">}</div><div class="line"></div><div class="line"><span class="keywordtype">int</span> main(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv)</div><div class="line">{</div><div class="line">    UNUSED(argc);</div><div class="line">    UNUSED(argv);</div><div class="line"></div><div class="line">    printf(<span class="stringliteral">&quot;Example1\n&quot;</span>);</div><div class="line">    fflush(stdout);</div><div class="line"></div><div class="line">    LT_DEVICE_ID thisDeviceUniqueId = (LT_DEVICE_ID)(LTPlatformAdapter_GetIP() % 256);</div><div class="line"></div><div class="line">    <a class="code" href="_little_talks_8h.html#a193a6958e527dcd7e4f7fe6f5feb8b56">LT_Init</a>(thisDeviceUniqueId, OnConnect, OnDisconnect, OnSubscribe, OnReceive);</div><div class="line"></div><div class="line">    <a class="code" href="_little_talks_8h.html#a0c96c16a91112543e0397e8af15464d1">LT_Subscribe</a>(VARIABLE_NUMBER_TOPIC_ID, <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div><div class="line">    <a class="code" href="_little_talks_8h.html#a0c96c16a91112543e0397e8af15464d1">LT_Subscribe</a>(VARIABLE_STRING_TOPIC_ID, STR_MAX_LENGTH);</div><div class="line"></div><div class="line">    <a class="code" href="_little_talks_8h.html#a575e1b143c2b750c6a1e7939312eeac9">LT_Start</a>();</div><div class="line"></div><div class="line">    printf(<span class="stringliteral">&quot;This device id: %llu\n&quot;</span>, thisDeviceUniqueId);</div><div class="line">    fflush(stdout);</div><div class="line"></div><div class="line">    <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> randomPeriodMs = 1000 + thisDeviceUniqueId % 1000;</div><div class="line">    srand(randomPeriodMs);</div><div class="line"></div><div class="line">    <span class="keywordtype">int</span> iter = 0;</div><div class="line">    <span class="keywordflow">while</span>(iter &lt; 10000000)</div><div class="line">    {</div><div class="line">        <span class="keywordtype">int</span> n = iter % 5;</div><div class="line"></div><div class="line">        <span class="keywordflow">if</span>(n == 0 || n == 1)</div><div class="line">        {</div><div class="line">            <span class="keywordtype">int</span> variableNum = rand() % 10;</div><div class="line"></div><div class="line">            <a class="code" href="_little_talks_8h.html#a63c15f8be20448ec5775edacb572fe3a">LT_Publish</a>(VARIABLE_NUMBER_TOPIC_ID, (BYTE*)&amp;variableNum, <span class="keyword">sizeof</span>(<span class="keywordtype">int</span>));</div><div class="line">        }</div><div class="line"></div><div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(n == 2)</div><div class="line">        {</div><div class="line">            <span class="keywordtype">char</span> str[STR_MAX_LENGTH];</div><div class="line">            sprintf(str, <span class="stringliteral">&quot;abcdefg %d&quot;</span>, rand() % 10);</div><div class="line">            <a class="code" href="_little_talks_8h.html#a63c15f8be20448ec5775edacb572fe3a">LT_Publish</a>(VARIABLE_STRING_TOPIC_ID, (BYTE*)str, (LT_UINT16)(strlen(str) + 1));</div><div class="line">        }</div><div class="line">        <span class="keywordflow">else</span> <span class="keywordflow">if</span>(n == 3)</div><div class="line">        {</div><div class="line">            <span class="keywordtype">char</span> str[STR_MAX_LENGTH];</div><div class="line">            sprintf(str, <span class="stringliteral">&quot;XYZ %d&quot;</span>, rand() % 10);</div><div class="line">            <a class="code" href="_little_talks_8h.html#a63c15f8be20448ec5775edacb572fe3a">LT_Publish</a>(VARIABLE_STRING_TOPIC_ID, (BYTE*)str, (LT_UINT16)(strlen(str) + 1));</div><div class="line">        }</div><div class="line"></div><div class="line">        LT_MICROSLEEP(randomPeriodMs * 1000);</div><div class="line"></div><div class="line">        iter++;</div><div class="line">    }</div><div class="line"></div><div class="line">    LT_Uninit();</div><div class="line"></div><div class="line">    <span class="keywordflow">return</span> 0;</div><div class="line">}</div><div class="line"></div></div><!-- fragment --></div>
 
+```csharp
+#include "LittleTalks.h"
+#define STR_MAX_LENGTH               50
+#define VARIABLE_NUMBER_TOPIC_ID       0x01
+#define VARIABLE_STRING_TOPIC_ID       0x02
+void OnConnect(LT_DEVICE_ID deviceId)
+{
+    printf("Connect device %llu\n", deviceId);
+    fflush(stdout);
+}
+void OnDisconnect(LT_DEVICE_ID deviceId)
+{
+    printf("Disconnect device %llu\n", deviceId);
+    fflush(stdout);
+}
+void OnSubscribe(LT_DEVICE_ID deviceId, LT_UINT64 topicId)
+{
+    if(topicId == VARIABLE_NUMBER_TOPIC_ID)
+    {
+        printf("Subscribe variable number from device %llu\n", deviceId);
+        fflush(stdout);
+    }
+    else if(topicId == VARIABLE_STRING_TOPIC_ID)
+    {
+        printf("Subscribe variable string from device %llu\n", deviceId);
+        fflush(stdout);
+    }
+}
+void OnReceive(LT_DEVICE_ID deviceId, LT_UINT64 topicId, BYTE* value, int valueSize)
+{
+    UNUSED(valueSize);
+    if(topicId == VARIABLE_NUMBER_TOPIC_ID)
+    {
+        printf("Receive variable number %d from device %llu\n", (int)*value, deviceId);
+        fflush(stdout);
+    }
+    else if(topicId == VARIABLE_STRING_TOPIC_ID)
+    {
+        printf("Receive variable string \"%s\" from device %llu\n", (char*)value,  deviceId);
+        fflush(stdout);
+    }
+}
+int main(int argc, char** argv)
+{
+    UNUSED(argc);
+    UNUSED(argv);
+    printf("Example1\n");
+    fflush(stdout);
+    LT_DEVICE_ID thisDeviceUniqueId = (LT_DEVICE_ID)(LTPlatformAdapter_GetIP() % 256);
+    LT_Init(thisDeviceUniqueId, OnConnect, OnDisconnect, OnSubscribe, OnReceive);
+    LT_Subscribe(VARIABLE_NUMBER_TOPIC_ID, sizeof(int));
+    LT_Subscribe(VARIABLE_STRING_TOPIC_ID, STR_MAX_LENGTH);
+    LT_Start();
+    printf("This device id: %llu\n", thisDeviceUniqueId);
+    fflush(stdout);
+    unsigned int randomPeriodMs = 1000 + thisDeviceUniqueId % 1000;
+    srand(randomPeriodMs);
+    int iter = 0;
+    while(iter < 10000000)
+    {
+        int n = iter % 5;
+        if(n == 0 || n == 1)
+        {
+            int variableNum = rand() % 10;
+            LT_Publish(VARIABLE_NUMBER_TOPIC_ID, (BYTE*)&variableNum, sizeof(int));
+        }
+        else if(n == 2)
+        {
+            char str[STR_MAX_LENGTH];
+            sprintf(str, "abcdefg %d", rand() % 10);
+            LT_Publish(VARIABLE_STRING_TOPIC_ID, (BYTE*)str, (LT_UINT16)(strlen(str) + 1));
+        }
+        else if(n == 3)
+        {
+            char str[STR_MAX_LENGTH];
+            sprintf(str, "XYZ %d", rand() % 10);
+            LT_Publish(VARIABLE_STRING_TOPIC_ID, (BYTE*)str, (LT_UINT16)(strlen(str) + 1));
+        }
+        LT_MICROSLEEP(randomPeriodMs * 1000);
+        iter++;
+    }
+    LT_Uninit();
+    return 0;
+}
+```
