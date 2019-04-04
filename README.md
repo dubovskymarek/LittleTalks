@@ -30,6 +30,7 @@ LittleTalks was written by Marek Dubovsky dubovskymarek@icloud.com<br/>
 #define STR_MAX_LENGTH               50
 #define VARIABLE_NUMBER_TOPIC_ID       0x01
 #define VARIABLE_STRING_TOPIC_ID       0x02
+
 void OnConnect(LT_DEVICE_ID deviceId)
 {
     printf("Connect device %llu\n", deviceId);
@@ -67,21 +68,28 @@ void OnReceive(LT_DEVICE_ID deviceId, LT_UINT64 topicId, BYTE* value, int valueS
         fflush(stdout);
     }
 }
+
 int main(int argc, char** argv)
 {
     UNUSED(argc);
     UNUSED(argv);
+    
     printf("Example1\n");
     fflush(stdout);
+    
     LT_DEVICE_ID thisDeviceUniqueId = (LT_DEVICE_ID)(LTPlatformAdapter_GetIP() % 256);
+    
     LT_Init(thisDeviceUniqueId, OnConnect, OnDisconnect, OnSubscribe, OnReceive);
     LT_Subscribe(VARIABLE_NUMBER_TOPIC_ID, sizeof(int));
     LT_Subscribe(VARIABLE_STRING_TOPIC_ID, STR_MAX_LENGTH);
     LT_Start();
+    
     printf("This device id: %llu\n", thisDeviceUniqueId);
     fflush(stdout);
+    
     unsigned int randomPeriodMs = 1000 + thisDeviceUniqueId % 1000;
     srand(randomPeriodMs);
+    
     int iter = 0;
     while(iter < 10000000)
     {
@@ -103,10 +111,12 @@ int main(int argc, char** argv)
             sprintf(str, "XYZ %d", rand() % 10);
             LT_Publish(VARIABLE_STRING_TOPIC_ID, (BYTE*)str, (LT_UINT16)(strlen(str) + 1));
         }
+        
         LT_MICROSLEEP(randomPeriodMs * 1000);
         iter++;
     }
     LT_Uninit();
+    
     return 0;
 }
 ```
