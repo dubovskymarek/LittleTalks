@@ -1,17 +1,24 @@
 
-\brief LittleTalks is very tiny comunication library based on UDP and it's inspirated MQTT protocol.
-\brief Instead MQTT it's designed as P2P communication in local network.
-
-\brief This library is portable writed in c language.
-\brief Library centralises all UDP implementation in LTPlatformAdapter.c file, that can be overriden to optional platform.
-\brief LittleTalks was created for startup canny.tech, where was used on both sides (application and device).
-
+<p>
+LittleTalks is very tiny comunication library based on UDP and it's inspirated MQTT protocol.
+Instead MQTT it's designed as P2P communication in local network.
+This library is portable writed in c language.
+Library centralises all UDP implementation in LTPlatformAdapter.c file, that can be overriden to optional platform.
+LittleTalks was created for startup canny.tech, where was used on both sides (application and device).
+</p>
 
 <b>Building from source</b>
-On Windows and Mac, use cmake to build. On other platforms, just run make to build.
+<p>
+Just run make to build.
+</p>
+
+<b>Documentation</b>
+<p>docs/html/index.html</p>
 
 <b>Credits</b>
+<p>
 LittleTalks was written by Marek Dubovsky dubovskymarek@icloud.com
+</p>
 
 <b>Files:</b>
 
