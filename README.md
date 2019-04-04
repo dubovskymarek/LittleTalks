@@ -16,11 +16,6 @@ docs/html/index.html<br/>
 <b>Credits</b><br/>
 LittleTalks was written by Marek Dubovsky dubovskymarek@icloud.com<br/>
 
-<b>Files:</b>
-
-\ref ./lib/LittleTalks.h<br/>
-\ref ./lib/LTPlatformAdapter.h<br/>
-
 <b>Quick start</b>
 <p>Example1 demonstrates basic sending and receiving 2 topics between 2 or more users.</p>
 
