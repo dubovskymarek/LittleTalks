@@ -24,8 +24,9 @@ LittleTalks was written by Marek Dubovsky dubovskymarek@icloud.com<br/>
 <b>Quick start</b>
 <p>Example1 demonstrates basic sending and receiving 2 topics between 2 or more users.</p>
 
-```csharp
+```c
 #include "LittleTalks.h"
+
 #define STR_MAX_LENGTH               50
 #define VARIABLE_NUMBER_TOPIC_ID       0x01
 #define VARIABLE_STRING_TOPIC_ID       0x02
