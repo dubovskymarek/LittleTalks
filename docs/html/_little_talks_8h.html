@@ -150,12 +150,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_lit
 </div><div class="memdoc">
 
 <p>LT_AddDevice. </p>
-<p>Note: This function is requirement to check connection of remote devices (devices in other network). </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">deviceId</td><td>permanent device, that won't release after disconnected. </td></tr>
-  </table>
-  </dd>
-</dl>
+<p>Special function for add device, that won't auto release after disconnected. LittleTalks alloc device structure after device connected, and release after disconnected. Maximum connected devices is 64, and if you need long-time live device, what you need listen, use this function. </p>
 
 </div>
 </div>
@@ -186,7 +181,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_lit
 </div><div class="memdoc">
 
 <p>BOOL <a class="el" href="_little_talks_8h.html#a537ec97bf150e05b46bd7a9222c49a39" title="BOOL LT_ForceSubscribeRemoteTopic(LT_DEVICE_ID deviceId, LT_TOPIC_ID topicId)">LT_ForceSubscribeRemoteTopic(LT_DEVICE_ID deviceId, LT_TOPIC_ID topicId)</a> </p>
-<p>It's special advanced function for immediately connect remote device and subscribe remote topic. This function use only situation, when you cannot wait for standard connection (10-20 seconds), but you need send topic in few miliseconds. For example: Android device is in sleep mode, every communication is stoped, and sometimes every 5 minutes i call small function. Android cannot wake up but it's allow me call small function few miliseconds, but every devices are disconnected, and they need 10-20 seconds to reconnect, these time it's not supported by sleeping android. To resolve this problem, is ignore standard connection process and force this process at one moment.</p>
+<p>It's special advanced function for immediately connect remote device and subscribe remote topic. This function use only situation, when you cannot wait for standard connection (10-20 seconds), but you need send topic in few miliseconds. For example: Android device is in sleep mode, every communication is stoped, and sometimes every 5 minutes i call small function. Android cannot wake up but it's allow me call small function few miliseconds, but every devices are disconnected, and they need 10-20 seconds to reconnect (this time it's not supported by sleeping android). To resolve this problem, is ignore standard connection process and force this process at one moment.</p>
 <p>example using: LT_ForceSubscribeRemoteTopic(remoteDeviceId, deviceIp, topicId); LT_Publish(topicId, valuePtr, valueSize);</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
@@ -356,12 +351,13 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_lit
     <tr><td class="paramname">onDisconnected_funcPtr</td><td>Event of disconnecting existing device. </td></tr>
     <tr><td class="paramname">onSubscribed_funcPtr</td><td>Event of receive subscribed topic from remote device. </td></tr>
     <tr><td class="paramname">onReceive_funcPtr</td><td>Event of receive new value of topic.<br />
- This event is below described:<br />
- <b>void</b> OnReceive(<b>LT_DEVICE_ID</b> deviceId, <b>LT_TOPIC_ID</b> topic, <b>BYTE*</b> value, <b>int</b> valueLength)<br />
+ <br />
+onReceive_funcPtr: <b>void</b> OnReceive(<b>LT_DEVICE_ID</b> deviceId, <b>LT_TOPIC_ID</b> topic, <b>BYTE*</b> value, <b>int</b> valueLength)<br />
 <b>deviceId</b> - source device, that is publishing topic. <br />
 <b>topic</b> - id of published topic<br />
 <b>value</b> - pointer of published topic data<br />
 <b>valueLength</b> - length of published data<br />
+ <br />
  </td></tr>
   </table>
   </dd>
@@ -453,7 +449,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_lit
 </div><div class="memdoc">
 
 <p>Step of main loop. </p>
-<p>Use every 100 miliseconds.</p>
+<p>Use every 333 miliseconds.</p>
 <dl class="section see"><dt>See also</dt><dd><a class="el" href="_little_talks_8h.html#acc83ebf512ca9ec4de70faeba1e52b33" title="Start main loop.">LT_OnStartMainLoop</a> </dd>
 <dd>
 <a class="el" href="_little_talks_8h.html#ad5975a98ce906cdbf868793cb822805e" title="End main loop.">LT_OnEndMainLoop</a> </dd></dl>
@@ -498,12 +494,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="_lit
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">topicId</td><td>64-bit unique identificator of topic. </td></tr>
-    <tr><td class="paramname">valueSize</td><td>Size of value. It's equal or lower as valueSizeMax parameter of LT_Subscribe.</td></tr>
+    <tr><td class="paramname">valueSize</td><td>Size of value. It's equal or lower as valueSizeMax parameter of LT_Subscribe. </td></tr>
   </table>
   </dd>
 </dl>
-<p>Example:</p>
-<p>LT_DEVICE_ID deviceId = 0xfaef1234; LT_UINT8 groupId = 0x01; LT_UINT8 item1 = 0x01; LT_UINT8 item2 = 0x02; </p>
 
 </div>
 </div>
