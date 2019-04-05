@@ -33,13 +33,15 @@ BOOL LT_IsInit();
 ///    \param onConnected_funcPtr Event of connecting new device.
 ///    \param onDisconnected_funcPtr Event of disconnecting existing device.
 ///    \param onSubscribed_funcPtr Event of receive subscribed topic from remote device.
-///    \param onReceive_funcPtr Event of receive new value of topic.\n This event is below described:\n
-///
+///    \param onReceive_funcPtr Event of receive new value of topic.\n
+///    \n
+///    \brief onReceive_funcPtr:
 ///    \brief <B>void</B> OnReceive(<B>LT_DEVICE_ID</B> deviceId, <B>LT_TOPIC_ID</B> topic, <B>BYTE*</B> value, <B>int</B> valueLength)\n
 ///    \brief <B>deviceId</B> - source device, that is publishing topic. \n
 ///	   \brief <B>topic</B> - id of published topic\n
 ///	   \brief <B>value</B> - pointer of published topic data\n
 ///	   \brief <B>valueLength</B> - length of published data\n
+///    \n
 ///    \return state of initialisation
 ///
 BOOL LT_Init(LT_DEVICE_ID deviceId,
@@ -103,13 +105,6 @@ BOOL LT_Subscribe(LT_TOPIC_ID topicId, LT_UINT16 valueSizeMax);
 ///    \param topicId 64-bit unique identificator of topic.
 ///    \param valueSize Size of value. It's equal or lower as valueSizeMax parameter of LT_Subscribe.
 ///
-///     Example:
-///
-///     LT_DEVICE_ID deviceId = 0xfaef1234;
-///     LT_UINT8 groupId = 0x01;
-///     LT_UINT8 item1 = 0x01;
-///     LT_UINT8 item2 = 0x02;
-///
 void LT_Publish(LT_TOPIC_ID topicId, BYTE* value, LT_UINT16 valueSize);
 
 /// \fn void LT_RequestForTopics(LT_DEVICE_ID* deviceId)
@@ -166,7 +161,7 @@ BOOL LT_OnStartMainLoop();
 /// \fn void LT_OnStepMainLoop()
 ///    \brief Step of main loop.
 ///
-///     Use every 100 miliseconds.
+///     Use every 333 miliseconds.
 ///
 ///     \see LT_OnStartMainLoop
 ///     \see LT_OnEndMainLoop
@@ -189,7 +184,7 @@ void LT_OnEndMainLoop();
 /// This function use only situation, when you cannot wait for standard connection (10-20 seconds), but you need
 /// send topic in few miliseconds. For example: Android device is in sleep mode, every communication is stoped, and sometimes
 /// every 5 minutes i call small function. Android cannot wake up but it's allow me call small function few miliseconds,
-/// but every devices are disconnected, and they need 10-20 seconds to reconnect, these time it's not supported by sleeping android.
+/// but every devices are disconnected, and  they need 10-20 seconds to reconnect (this time it's not supported by sleeping android).
 /// To resolve this problem, is ignore standard connection process and force this process at one moment.
 ///
 /// example using:
@@ -205,8 +200,9 @@ BOOL LT_ForceSubscribeRemoteTopic(LT_DEVICE_ID deviceId, LT_TOPIC_ID topicId);
 
 ///
 /// \brief LT_AddDevice
-/// \brief Note: This function is requirement to check connection of remote devices (devices in other network).
-/// \param deviceId permanent device, that won't release after disconnected.
+/// \brief Special function for add device, that won't auto release after disconnected.
+/// \brief LittleTalks alloc device structure after device connected, and release after disconnected.
+/// \brief Maximum connected devices is 64, and if you need long-time live device, what you need listen, use this function.
 ///
 void LT_AddDevice(LT_DEVICE_ID deviceId);
 

@@ -110,8 +110,7 @@ void* LT_main_func(void* ptr)
 
     g_lt_mainThread_isRunning = TRUE;
 
-    ///Period 333 ms
-    LT_UINT64 step = 333333;
+    LT_UINT64 step = LT_MAIN_FUNCTION_PERIOD_MS;
     while(g_lt_mainThread_isRunning)
     {
         if(g_littleTalks == NULL)
@@ -125,7 +124,7 @@ void* LT_main_func(void* ptr)
 
         LT_OnStepMainLoop();
 
-        LT_MICROSLEEP(step);
+        LT_MICROSLEEP(step * 1000);
     }
 
     g_lt_udpReceiveThread_isRunning = FALSE;

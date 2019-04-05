@@ -56,10 +56,6 @@ void LT_MICROSLEEP(LT_UINT64 time);
 
 typedef void (*LT_OnUdpIncomingPacket_Func)(BYTE* data, int dataSize);
 
-typedef BOOL (*LT_OnStartMainLoop_Func)();
-typedef void (*LT_OnStepMainLoop_Func)();
-typedef void (*LT_OnEndMainLoop_Func)();
-
 ///
 /// \struct LTUdpSocket
 ///
@@ -97,14 +93,14 @@ void LTPlatformAdapter_Init(LT_OnUdpIncomingPacket_Func udpIncomingPacket_funcPt
 void LTPlatformAdapter_Uninit();
 
 /// \fn void LTPlatformAdapter_Lock()
-///    \brief Lock critical memory in multicore CPU. In one core CPU this function has empty definition.
+///    \brief Lock critical memory in multicore CPU. In one core CPU this function can be empty.
 ///
 ///     \see LTPlatformAdapter_Unlock
 ///
 void LTPlatformAdapter_Lock();
 
 /// \fn void LTPlatformAdapter_Unlock()
-///    \brief Unlock critical memory in multicore CPU. In one core CPU this function has empty definition.
+///    \brief Unlock critical memory in multicore CPU. In one core CPU this function can be empty.
 ///
 ///     \see LTPlatformAdapter_Lock
 ///

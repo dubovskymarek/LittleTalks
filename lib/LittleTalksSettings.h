@@ -24,9 +24,9 @@
 
 #define LT_BROADCAST_KEEPALIVE_AND_INTRODUCTION_INTERVAL    10
 #define LT_LOCAL_KEEPALIVE_TIMEOUT_MAX                      60
-#define LT_REMOTE_KEEPALIVE_TIMEOUT_MAX                     300
 #define LT_CONFIRMATION_DELAY                               1
-#define LT_REMOTE_SERVER_FREQUENCE                          10
+
+#define LT_MAIN_FUNCTION_PERIOD_MS  333
 
 #define LT_PACKET_HEADER_SIZE   20
 #define LT_STEP_FREQUENCE       3
@@ -37,7 +37,7 @@
 #define LT_DEVICE_FLAG          LT_UINT64
 
 #define LT_MAJOR_VERSION        0
-#define LT_MINOR_VERSION        4
+#define LT_MINOR_VERSION        5
 
 
 #endif // LITTLETALKSSETTINGS_H
