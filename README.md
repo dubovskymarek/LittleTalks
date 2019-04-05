@@ -24,15 +24,19 @@ LittleTalks was written by Marek Dubovsky dubovskymarek@icloud.com<br/>
 
 ```c
 #include "LittleTalks.h"
-#define STR_MAX_LENGTH               50
+
+#define STR_MAX_LENGTH                 50
 #define VARIABLE_NUMBER_TOPIC_ID       0x01
 #define VARIABLE_STRING_TOPIC_ID       0x02
+
 LT_DEVICE_ID g_thisDeviceId = 0;
 BOOL g_thisDeviceIsSender = TRUE;
+
 void OnConnect(LT_DEVICE_ID deviceId)
 {
     printf("Connect device %llu\n", deviceId);
     fflush(stdout);
+    
     if(g_thisDeviceId < deviceId)
     {
         printf("I'm receiver\n");
@@ -44,6 +48,7 @@ void OnDisconnect(LT_DEVICE_ID deviceId)
 {
     printf("Disconnect device %llu\n", deviceId);
     fflush(stdout);
+    
     if(g_thisDeviceId < deviceId)
     {
         g_thisDeviceIsSender = TRUE;
@@ -82,17 +87,23 @@ int main(int argc, char** argv)
 {
     UNUSED(argc);
     UNUSED(argv);
+    
     printf("Example1\n");
     fflush(stdout);
+    
     g_thisDeviceId = (LT_DEVICE_ID)(LTPlatformAdapter_GetIP() % 256);
+    
     LT_Init(g_thisDeviceId, OnConnect, OnDisconnect, OnSubscribe, OnReceive);
     LT_Subscribe(VARIABLE_NUMBER_TOPIC_ID, sizeof(int));
     LT_Subscribe(VARIABLE_STRING_TOPIC_ID, STR_MAX_LENGTH);
     LT_Start();
+    
     printf("This device id: %llu\n", g_thisDeviceId);
     fflush(stdout);
+    
     printf("I'm sender\n");
     fflush(stdout);
+    
     int iter = 0;
     while(TRUE)
     {
@@ -109,9 +120,11 @@ int main(int argc, char** argv)
                 LT_Publish(VARIABLE_STRING_TOPIC_ID, (BYTE*)str, (LT_UINT16)(strlen(str) + 1));
             }
         }
+        
         LT_MICROSLEEP(1000000);
         iter++;
     }
+    
     LT_Uninit();
     return 0;
 }
