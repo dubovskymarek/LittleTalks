@@ -1,6 +1,6 @@
 <b>LittleTalks</b>
 <p>
-LittleTalks is very tiny communication library based on UDP and it's inspired MQTT protocol,
+LittleTalks is very tiny communication library based on UDP and it's inspired by MQTT protocol,
 but LittleTalks is designed as P2P communication in local network for support connection 64 devices in same time.<br/>
 This library is portable written in c language, at beginning it was designed for microprocessors with low performance and low memory,
 but it's multiplatform with support desktop and mobile platforms.
