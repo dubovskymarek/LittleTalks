@@ -2,6 +2,7 @@
 <p>
 LittleTalks is very tiny communication library based on UDP and it's inspired by MQTT protocol,
 but LittleTalks is designed as P2P communication in local network for support connection 64 devices at the same time.<br/>
+It supports resend of lost messages and check connection of devices (similarly as TCP).<br/>
 This library is portable written in c language, at beginning it was designed for microprocessors with low performance and low memory, but it supports desktop and mobile platforms.
 Library centralises all UDP implementation in LTPlatformAdapter.c file, that can be overriden to optional platform.
 <br/>
